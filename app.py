@@ -131,8 +131,8 @@ with tab_search:
 
                 # Salva in session_state per azione rapida
                 st.session_state.search_results = found
-                st.session_state.search_edition = search_edition
-                st.session_state.search_owner = search_owner
+                st.session_state.last_search_edition = search_edition
+                st.session_state.last_search_owner = search_owner
 
                 # Risultati
                 if found:
@@ -164,8 +164,8 @@ with tab_search:
             ):
                 codes_to_dec = [r["sticker_code"] for r in results]
                 updated, deleted = decrement_stickers(
-                    st.session_state.search_edition,
-                    st.session_state.search_owner,
+                    st.session_state.last_search_edition,
+                    st.session_state.last_search_owner,
                     codes_to_dec,
                 )
                 st.success(
