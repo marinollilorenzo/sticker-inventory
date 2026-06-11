@@ -119,7 +119,7 @@ with tab_search:
             height=120,
         )
 
-        if st.button("🔎 Cerca", use_container_width=True, key="btn_search"):
+        if st.button("🔎 Cerca", width="stretch", key="btn_search"):
             codes = parse_sticker_list(raw_input)
 
             if not codes:
@@ -139,7 +139,7 @@ with tab_search:
                     st.success(f"✅ **{len(found)}** figurine trovate su {len(codes)} cercate!")
                     df_found = pd.DataFrame(found)
                     df_found.columns = ["Codice", "Quantità"]
-                    st.dataframe(df_found, use_container_width=True, hide_index=True)
+                    st.dataframe(df_found, width="stretch", hide_index=True)
                 else:
                     st.info("Nessuna delle figurine cercate è presente nell'inventario.")
 
@@ -158,7 +158,7 @@ with tab_search:
 
             if st.button(
                 "📤 Segna Trovate come Vendute (-1)",
-                use_container_width=True,
+                width="stretch",
                 type="primary",
                 key="btn_decrement",
             ):
@@ -222,7 +222,7 @@ with tab_inventory:
         cols_to_show = [v for v in display_cols.values() if v in df_display.columns]
         df_display = df_display[cols_to_show]
 
-        st.dataframe(df_display, use_container_width=True, hide_index=True)
+        st.dataframe(df_display, width="stretch", hide_index=True)
         st.caption(f"📊 Totale righe: **{len(df_display)}**")
 
         # Download CSV
@@ -232,7 +232,7 @@ with tab_inventory:
             data=csv,
             file_name="inventario_figurine.csv",
             mime="text/csv",
-            use_container_width=True,
+            width="stretch",
         )
     else:
         st.info("📭 Nessuna figurina trovata con i filtri selezionati.")
@@ -270,7 +270,7 @@ with tab_manage:
         )
         add_submitted = st.form_submit_button(
             "➕ Aggiungi all'inventario",
-            use_container_width=True,
+            width="stretch",
         )
 
     if add_submitted:
@@ -324,7 +324,7 @@ with tab_manage:
         )
         remove_submitted = st.form_submit_button(
             "🗑️ Rimuovi dall'inventario",
-            use_container_width=True,
+            width="stretch",
             type="primary",
         )
 

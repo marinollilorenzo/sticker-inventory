@@ -93,7 +93,7 @@ def render_login_form() -> bool:
     if is_authenticated():
         with st.sidebar:
             st.success(f"👤 **{get_current_user()}**")
-            if st.button("🚪 Logout", use_container_width=True):
+            if st.button("🚪 Logout", width="stretch"):
                 logout()
                 st.rerun()
         return True
@@ -116,7 +116,7 @@ def render_login_form() -> bool:
             max_chars=4,
             placeholder="••••",
         )
-        submitted = st.form_submit_button("Accedi", use_container_width=True)
+        submitted = st.form_submit_button("Accedi", width="stretch")
 
     if submitted:
         if not pin_input:
