@@ -178,8 +178,7 @@ def get_inventory(
 def upsert_stickers(
     edition: str,
     owner: str,
-    sticker_codes: list[str],
-    quantity: int = 1,
+    sticker_counts: dict[str, int],
 ) -> int:
     """Inserisce o aggiorna figurine nel database (upsert).
 
@@ -189,8 +188,7 @@ def upsert_stickers(
     Args:
         edition: Nome dell'edizione.
         owner: Nome del proprietario.
-        sticker_codes: Lista di codici figurine da inserire/aggiornare.
-        quantity: Quantità da aggiungere per ciascuna figurina.
+        sticker_counts: Dizionario {codice_figurina: quantita_da_aggiungere}.
 
     Returns:
         Numero di figurine processate.
@@ -198,7 +196,7 @@ def upsert_stickers(
     client = get_supabase_client()
     processed = 0
 
-    for code in sticker_codes:
+    for code, qty in sticker_counts.items():
         # Controlla se esiste già
         response = (
             client.table("inventory")
@@ -212,14 +210,14 @@ def upsert_stickers(
         if response.data:
             # Aggiorna quantità esistente
             row = response.data[0]
-            new_qty = row["quantity"] + quantity
+            new_qty = row["quantity"] + qty
             client.table("inventory").update({"quantity": new_qty}).eq("id", row["id"]).execute()
         else:
             # Inserisci nuova riga
             client.table("inventory").insert({
                 "edition": edition,
                 "sticker_code": code,
-                "quantity": quantity,
+                "quantity": qty,
                 "owner": owner,
             }).execute()
 

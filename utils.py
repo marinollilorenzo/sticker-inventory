@@ -52,3 +52,23 @@ def format_sticker_list(codes: list[str]) -> str:
         Stringa formattata (es. "105, 120, ITA04").
     """
     return ", ".join(codes)
+
+
+def parse_sticker_list_with_counts(raw_input: str) -> dict[str, int]:
+    """Normalizza una stringa CSV e conta le occorrenze dei codici.
+
+    Utile per l'inserimento, in modo che inserendo "772,772,772" il sistema
+    capisca che si vogliono inserire 3 copie della figurina 772.
+
+    Args:
+        raw_input: Testo grezzo incollato dall'utente.
+
+    Returns:
+        Dizionario {codice_figurina: occorrenze}.
+    """
+    counts: dict[str, int] = {}
+    for token in raw_input.split(","):
+        code = token.strip().upper()
+        if code:
+            counts[code] = counts.get(code, 0) + 1
+    return counts

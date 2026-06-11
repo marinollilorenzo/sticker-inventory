@@ -20,7 +20,7 @@ from database import (
     search_stickers,
     upsert_stickers,
 )
-from utils import format_sticker_list, parse_sticker_list
+from utils import format_sticker_list, parse_sticker_list, parse_sticker_list_with_counts
 
 # ─── Configurazione Pagina ───────────────────────────────────────────────────
 
@@ -279,13 +279,15 @@ with tab_manage:
         elif not add_codes_raw.strip():
             st.warning("Inserisci almeno un codice figurina.")
         else:
-            codes = parse_sticker_list(add_codes_raw)
+            counts = parse_sticker_list_with_counts(add_codes_raw)
+            # Moltiplica per la quantità specificata nel selettore numerico
+            final_counts = {k: v * add_quantity for k, v in counts.items()}
+            
             edition_clean = add_edition.strip()
             processed = upsert_stickers(
                 edition=edition_clean,
                 owner=current_user,
-                sticker_codes=codes,
-                quantity=add_quantity,
+                sticker_counts=final_counts,
             )
             st.success(
                 f"✅ **{processed}** figurine aggiunte/aggiornate "
